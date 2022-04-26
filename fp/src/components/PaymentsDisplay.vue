@@ -17,3 +17,13 @@ export default {
   },
 };
 </script>
+
+<style>
+.paymentsList {
+  margin-top: 20px;
+}
+
+.paymentsItem {
+  margin-top: 10px;
+}
+</style>

@@ -1,7 +1,11 @@
 <template>
   <div class="form-wrapper">
-    <input v-model="category" placeholder="Payment description" />
-    <input v-model="value" placeholder="Payment amount" />
+    <select v-model="category" v-if="categoryList">
+      <option v-for="(value, idx) in categoryList" :key="idx">
+        {{ value }}
+      </option>
+    </select>
+    <input v-model.number="value" placeholder="Payment amount" />
     <input v-model="date" placeholder="Payment date" />
     <button @click="onClickSave">ADD +</button>
   </div>
@@ -26,6 +30,9 @@ export default {
       };
       return new Intl.DateTimeFormat("UTC", options).format(today);
     },
+    categoryList() {
+      return this.$store.getters.getCategoryList;
+    },
   },
   methods: {
     onClickSave() {
@@ -34,9 +41,11 @@ export default {
         category: this.category,
         value: this.value,
       };
-      this.$emit("addNewPayment", data);
-      console.log(data);
+      this.$store.commit("addDataToPaymentsList", data);
     },
+  },
+  async created() {
+    await this.$store.dispatch("fetchCategoryList");
   },
 };
 </script>
