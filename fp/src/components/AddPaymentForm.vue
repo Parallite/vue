@@ -1,5 +1,6 @@
 <template>
   <div class="form-wrapper">
+    <NewCategoryForm />
     <select v-model="category" v-if="categoryList">
       <option v-for="(value, idx) in categoryList" :key="idx">
         {{ value }}
@@ -11,7 +12,12 @@
   </div>
 </template>
 <script>
+import NewCategoryForm from "@/components/NewCategoryForm.vue";
+
 export default {
+  components: {
+    NewCategoryForm,
+  },
   name: "AddPaymentForm",
   data() {
     return {
@@ -33,6 +39,9 @@ export default {
     categoryList() {
       return this.$store.getters.getCategoryList;
     },
+    newCategoryList() {
+      return this.$store.getters.newCategoryList;
+    },
   },
   methods: {
     onClickSave() {
@@ -50,4 +59,9 @@ export default {
 };
 </script>
 <style scoped>
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
 </style>

@@ -7,8 +7,8 @@
     <main>
       <button @click="showForm = !showForm">Add new cost +</button>
       <AddPaymentForm v-if="showForm" />
-      <PaymentsDisplay :items="currentElements"/>
-      <MyPagination :cur="cur" :length="getPaymentList.length" :n="n" @changePage="changePage"/>
+      <PaymentsDisplay :items="currentElements" />
+      <MyPagination :cur="cur" :length="12" :n="n" @changePage="changePage" />
     </main>
   </div>
 </template>
@@ -24,20 +24,23 @@ export default {
   components: {
     PaymentsDisplay,
     AddPaymentForm,
-    MyPagination
+    MyPagination,
   },
   data() {
     return {
       showForm: false,
       cur: 1,
-      n: 5,
+      n: 3,
     };
   },
   computed: {
     ...mapGetters(["getFullPaymentValue", "getPaymentList"]),
     currentElements() {
-      return this.getPaymentList.slice(this.n * (this.cur - 1), this.n * (this.cur - 1) + this.n)
-    }
+      return this.getPaymentList.slice(
+        this.n * (this.cur - 1),
+        this.n * (this.cur - 1) + this.n
+      );
+    },
   },
   methods: {
     addPaymentData(data) {
@@ -45,10 +48,11 @@ export default {
     },
     changePage(p) {
       this.cur = p;
-    }
+      this.$store.dispatch("fetchData", p);
+    },
   },
   created() {
-    this.$store.dispatch("fetchData");
+    this.$store.dispatch("fetchData", this.cur);
   },
   mounted() {},
 };
