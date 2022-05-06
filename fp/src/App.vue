@@ -1,18 +1,17 @@
 <template>
   <div id="app">
-    <HomeView />
+    <nav>
+      <router-link :to="{ name: 'Dashboard', params: { page: '1' } }"
+        >Dashboard</router-link
+      >
+      | <router-link to="/about">About</router-link> |
+      <router-link to="/notfound">notfound</router-link>
+    </nav>
+    <router-view />
   </div>
 </template>
 
 <script>
-import HomeView from "./components/HomeView.vue";
-
-export default {
-  name: "App",
-  components: {
-    HomeView,
-  },
-};
 </script>
 
 <style>
