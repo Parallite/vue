@@ -22,6 +22,22 @@ const mutations = {
   setPaymentsListDataFromNotFoundView(state, payload) {
     state.paymentsListFromNotFoundView.push(payload);
   },
+  removeItemFromPaymentsList(state, payload) {
+    state.paymentsList.splice(payload, 1);
+  },
+  editPaymentsListItem(state, payload) {
+    let idx = payload[0];
+    let obj = payload[1];
+    if (payload[1].category !== "") {
+      state.paymentsList[idx].category = obj.category;
+    }
+    if (payload[1].value !== "") {
+      state.paymentsList[idx].value = obj.value;
+    }
+    if (payload[1].date !== "") {
+      state.paymentsList[idx].date = obj.date;
+    }
+  },
 };
 
 const getters = {

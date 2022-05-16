@@ -1,9 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import HomeView from "../components/HomeView.vue";
-import AboutView from "../components/AboutView.vue";
-import NotFound from "../components/NotFoundView.vue";
 import AddPaymentForm from "../components/AddPaymentForm.vue";
 
 Vue.use(Router);
@@ -12,17 +9,20 @@ const routes = [
   {
     path: "/dashboard/:page/",
     name: "Dashboard",
-    component: HomeView,
+    component: () =>
+      import(/* webpackChunkName: "PageDashboard" */ "../views/HomeView.vue"),
   },
   {
     path: "/about",
     name: "About",
-    component: AboutView,
+    component: () =>
+      import(/* webpackChunkName: "PageAbout" */ "../views/AboutView.vue"),
   },
   {
     path: "/notfound",
     name: "NotFound",
-    component: NotFound,
+    component: () =>
+      import(/* webpackChunkName: "PageAbout" */ "../views/NotFoundView.vue"),
   },
   {
     path: "/add/:section/:category",
@@ -51,7 +51,6 @@ router.beforeEach((to, from, next) => {
 });
 
 router.beforeResolve((to, from, next) => {
-  console.log(to, from);
   next();
 });
 

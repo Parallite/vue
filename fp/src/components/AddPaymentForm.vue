@@ -7,7 +7,10 @@
     </select>
     <input v-model.number="value" placeholder="Payment amount" />
     <input v-model="date" placeholder="Payment date" />
-    <button @click="onClickSave">ADD +</button>
+    <button @click="onClickSave" v-if="!showContextMenuForm">ADD +</button>
+    <button @click="editData" v-if="showContextMenuForm">
+      Закончить редактирование
+    </button>
   </div>
 </template>
 <script>
@@ -19,6 +22,10 @@ export default {
       category: "",
       value: "",
     };
+  },
+  props: {
+    showContextMenuForm: Boolean,
+    activeTarget: Number,
   },
   computed: {
     getCurrentDate() {
@@ -42,6 +49,15 @@ export default {
         value: this.value,
       };
       this.$store.commit("addDataToPaymentsList", data);
+    },
+    editData() {
+      let editObj = {
+        date: this.date,
+        category: this.category,
+        value: this.value,
+      };
+      this.$store.commit("editPaymentsListItem", [this.activeTarget, editObj]);
+      this.$editContextMenu.hide("hide");
     },
   },
   async created() {
