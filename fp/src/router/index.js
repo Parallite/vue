@@ -19,6 +19,12 @@ const routes = [
       import(/* webpackChunkName: "PageAbout" */ "../views/AboutView.vue"),
   },
   {
+    path: "/calc",
+    name: "Calc",
+    component: () =>
+      import(/* webpackChunkName: "PageAbout" */ "../components/Calc.vue"),
+  },
+  {
     path: "/notfound",
     name: "NotFound",
     component: () =>
