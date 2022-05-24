@@ -1,80 +1,73 @@
 <template>
-  <div class="paymentsList">
-    <div class="paymentItem" v-for="(item, index) in items" :key="index">
-      {{ item }}
-      <button :name="index" @click="openCloseEditContextMenu(index)">
-        ...
-      </button>
-    </div>
-    <transition name="fade">
-      <EditContextMenu v-if="showEditContextMenu" :activeTarget="activeTarget"
-    /></transition>
+  <div>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      :items-per-page="15"
+      class="elevation-1"
+    >
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon small class="mr-2" @click="editModeOn(item)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
-<script scope>
+
+
+<script>
 export default {
   name: "PaymentsDisplay",
   data() {
-    return {
-      showEditContextMenu: false,
-      activeTarget: 0,
-    };
+    return {};
   },
   props: {
     items: {
       type: Array,
       default: () => [],
     },
-    curPage: {
-      type: Number,
-      default: () => Number,
-    },
   },
-  components: {
-    EditContextMenu: () => import("./EditContextMenu.vue"),
+  computed: {
+    headers() {
+      return [
+        {
+          text: "#",
+          value: "id",
+          width: "90",
+          align: "left",
+        },
+        {
+          text: "Date",
+          value: "date",
+          width: "100",
+          align: "left",
+        },
+        {
+          text: "Category",
+          value: "category",
+          width: "100",
+          align: "left",
+        },
+        {
+          text: "Value",
+          value: "value",
+          width: "150",
+          align: "left",
+        },
+        { text: "Actions", value: "actions", sortable: false },
+      ];
+    },
   },
   methods: {
-    openCloseEditContextMenu(index) {
-      if (!this.showEditContextMenu) {
-        this.$editContextMenu.show("show");
-        this.activeTarget = index + (this.curPage * 5 - 5);
-      } else {
-        this.$editContextMenu.hide("hide");
-      }
+    editModeOn(item) {
+      this.$emit("editModeOn", item);
     },
-    showContextMenu() {
-      this.showEditContextMenu = true;
+    deleteItem(item) {
+      this.$store.commit("removeItemFromPaymentsList", item);
     },
-    hideContextMenu() {
-      this.showEditContextMenu = false;
-    },
-  },
-  mounted() {
-    this.$editContextMenu.EventBus.$on("show", this.showContextMenu);
-    this.$editContextMenu.EventBus.$on("hide", this.hideContextMenu);
-  },
-  beforeDestroy() {
-    this.$editContextMenu.EventBus.$off("show", this.showContextMenu);
-    this.$editContextMenu.EventBus.$off("hide", this.hideContextMenu);
   },
 };
 </script>
-
-<style>
-.paymentsList {
-  margin-top: 20px;
-}
-
-.paymentsItem {
-  margin-top: 10px;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-  opacity: 0;
-}
-</style>
