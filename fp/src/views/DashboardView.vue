@@ -46,6 +46,7 @@ export default {
               "ffa500",
             ],
             data: [],
+            hoverOffset: 4,
           },
         ],
       },
