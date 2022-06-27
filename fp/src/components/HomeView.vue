@@ -2,15 +2,13 @@
   <div class="home">
     <header>
       <div class="title">My personal costs</div>
+      <div>Total price = {{ getFullPaymentValue }}</div>
     </header>
     <main>
       <button @click="showForm = !showForm">Add new cost +</button>
-      <AddPaymentForm v-if="showForm" @addNewPayment="addPaymentData" />
-      <PaymentsDisplay :items="paymentsList" />
-      <PaymentsPagination
-        :itemsLength="paymentsList.length"
-        @changePages="changePages"
-      />
+      <AddPaymentForm v-if="showForm" />
+      <PaymentsDisplay :items="currentElements" />
+      <MyPagination :cur="cur" :length="12" :n="n" @changePage="changePage" />
     </main>
   </div>
 </template>
@@ -18,50 +16,43 @@
 <script>
 import PaymentsDisplay from "@/components/PaymentsDisplay.vue";
 import AddPaymentForm from "@/components/AddPaymentForm.vue";
-import PaymentsPagination from "@/components/PaymentsPagination.vue";
+import MyPagination from "@/components/MyPagination.vue";
+import { mapGetters } from "vuex";
+
 export default {
   name: "HomeView",
   components: {
     PaymentsDisplay,
     AddPaymentForm,
-    PaymentsPagination,
+    MyPagination,
   },
   data() {
     return {
       showForm: false,
-      paymentsList: [],
-      activePages: 1,
+      cur: 1,
+      n: 3,
     };
+  },
+  computed: {
+    ...mapGetters(["getFullPaymentValue", "getPaymentList"]),
+    currentElements() {
+      return this.getPaymentList.slice(
+        this.n * (this.cur - 1),
+        this.n * (this.cur - 1) + this.n
+      );
+    },
   },
   methods: {
     addPaymentData(data) {
       this.paymentsList.push(data);
     },
-    changePages(pagNum) {
-      this.activePages = pagNum;
-    },
-    fetchData() {
-      return [
-        {
-          date: "28.03.2020",
-          category: "Food",
-          value: 169,
-        },
-        {
-          date: "24.03.2020",
-          category: "Transport",
-          value: 360,
-        },
-        {
-          date: "24.03.2020",
-          category: "Food",
-          value: 532,
-        },
-      ];
+    changePage(p) {
+      this.cur = p;
+      this.$store.dispatch("fetchData", p);
     },
   },
   created() {
-    this.paymentsList = this.fetchData();
+    this.$store.dispatch("fetchData", this.cur);
   },
   mounted() {},
 };
