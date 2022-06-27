@@ -5,9 +5,8 @@
       <div>Total price = {{ getFullPaymentValue }}</div>
     </header>
     <main>
-      <button @click="showForm = !showForm">Add new cost +</button>
-      <AddPaymentForm v-if="showForm" />
-      <PaymentsDisplay :items="currentElements" />
+      <button @click="openModalForm">Show</button>
+      <PaymentsDisplay :items="currentElements" :curPage="cur" />
       <MyPagination
         :cur="cur"
         :length="getPaymentList.length"
@@ -19,21 +18,18 @@
 </template>
 
 <script>
-import PaymentsDisplay from "@/components/PaymentsDisplay.vue";
-import AddPaymentForm from "@/components/AddPaymentForm.vue";
-import MyPagination from "@/components/MyPagination.vue";
+import PaymentsDisplay from "../components/PaymentsDisplay.vue";
+import MyPagination from "../components/MyPagination.vue";
 import { mapGetters } from "vuex";
 
 export default {
   name: "HomeView",
   components: {
     PaymentsDisplay,
-    AddPaymentForm,
     MyPagination,
   },
   data() {
     return {
-      showForm: false,
       cur: 1,
       n: 5,
     };
@@ -53,6 +49,12 @@ export default {
     },
     changePage(p) {
       this.cur = p;
+    },
+    openModalForm() {
+      this.$modal.show("addform", {
+        title: "Add New Payment",
+        component: "AddPaymentForm",
+      });
     },
   },
   created() {
