@@ -7,22 +7,18 @@ Vue.use(Router);
 
 const routes = [
   {
-    path: "/dashboard/:page/",
+    path: "/dashboard",
     name: "Dashboard",
     component: () =>
-      import(/* webpackChunkName: "PageDashboard" */ "../views/HomeView.vue"),
+      import(
+        /* webpackChunkName: "PageDashboard" */ "../views/DashboardView.vue"
+      ),
   },
   {
     path: "/about",
     name: "About",
     component: () =>
       import(/* webpackChunkName: "PageAbout" */ "../views/AboutView.vue"),
-  },
-  {
-    path: "/calc",
-    name: "Calc",
-    component: () =>
-      import(/* webpackChunkName: "PageAbout" */ "../components/Calc.vue"),
   },
   {
     path: "/notfound",

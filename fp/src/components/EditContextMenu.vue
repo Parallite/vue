@@ -7,8 +7,28 @@
       />
     </div>
     <div v-if="showBtns">
-      <div><button @click="startEditData">Редактировать</button></div>
-      <div><button @click="removeData">Удалить</button></div>
+      <div>
+        <v-card elevation="2">
+          <v-btn
+            @click="startEditData"
+            color="teal mr-2"
+            dark
+            elevation="2"
+            small
+            x-small
+            >EDIT</v-btn
+          >
+          <v-btn
+            @click="removeData"
+            color="teal"
+            dark
+            elevation="2"
+            small
+            x-small
+            >DELETE</v-btn
+          >
+        </v-card>
+      </div>
     </div>
   </div>
 </template>
@@ -46,7 +66,6 @@ export default {
 .wrapper {
   display: flex;
   flex-direction: column;
-  padding: 20px;
   position: absolute;
   background: #efefef;
   top: 20%;
