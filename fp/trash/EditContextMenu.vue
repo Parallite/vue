@@ -47,7 +47,7 @@ export default {
     };
   },
   components: {
-    AddPaymentForm: () => import("./AddPaymentForm.vue"),
+    AddPaymentForm: () => import("../src/components/AddPaymentForm.vue"),
   },
   methods: {
     startEditData() {

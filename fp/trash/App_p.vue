@@ -47,7 +47,7 @@ export default {
   },
   components: {
     ModalWindowAddPaymentForm: () =>
-      import("./components/ModalWindowAddPaymentForm.vue"),
+      import("../src/components/ModalWindowAddPaymentForm.vue"),
   },
 };
 </script>

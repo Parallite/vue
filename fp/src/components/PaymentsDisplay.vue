@@ -1,11 +1,6 @@
 <template>
   <div>
-    <v-data-table
-      :headers="headers"
-      :items="items"
-      :items-per-page="15"
-      class="elevation-1"
-    >
+    <v-data-table :headers="headers" :items="items" :items-per-page="15">
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editModeOn(item)">
           mdi-pencil
@@ -36,28 +31,28 @@ export default {
         {
           text: "#",
           value: "id",
-          width: "90",
+          width: "20%",
           align: "left",
         },
         {
           text: "Date",
           value: "date",
-          width: "100",
+          width: "20%",
           align: "left",
         },
         {
           text: "Category",
           value: "category",
-          width: "100",
+          width: "20%",
           align: "left",
         },
         {
           text: "Value",
           value: "value",
-          width: "150",
+          width: "25%",
           align: "left",
         },
-        { text: "Actions", value: "actions", sortable: false },
+        { text: "Actions", value: "actions", sortable: false, width: "15%" },
       ];
     },
   },
@@ -71,3 +66,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.theme--light.v-data-table {
+  color: rgb(10, 13, 37);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  margin-bottom: 50px;
+}
+</style>

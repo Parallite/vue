@@ -1,5 +1,5 @@
 <template>
-  <Doughnut
+  <Bar
     :chart-options="chartOptions"
     :chart-data="chartData"
     :chart-id="chartId"
@@ -13,30 +13,38 @@
 </template>
 
 <script>
-import { Doughnut } from "vue-chartjs/legacy";
+import { Bar } from "vue-chartjs/legacy";
 
 import {
   Chart as ChartJS,
   Title,
   Tooltip,
   Legend,
-  ArcElement,
+  BarElement,
   CategoryScale,
+  LinearScale,
 } from "chart.js";
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 export default {
-  name: "DoughnutChart",
+  name: "BarChart",
   components: {
-    Doughnut,
+    Bar,
   },
   props: {
-    chartDataDonutInfo: Object,
+    chartDataBarInfo: Object,
     default: () => {},
     chartId: {
       type: String,
-      default: "doughnut-chart",
+      default: "bar-chart",
     },
     datasetIdKey: {
       type: String,
@@ -65,7 +73,7 @@ export default {
   },
   data() {
     return {
-      chartData: this.chartDataDonutInfo,
+      chartData: this.chartDataBarInfo,
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,

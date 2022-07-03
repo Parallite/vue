@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import PaymentsDisplay from "../components/PaymentsDisplayOld.vue";
-import MyPagination from "../components/MyPagination.vue";
+import PaymentsDisplay from "./PaymentsDisplayOld.vue";
+import MyPagination from "./MyPagination.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "HomeView",

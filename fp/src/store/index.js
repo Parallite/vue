@@ -71,10 +71,10 @@ export default new Vuex.Store({
       return new Promise((resolve) => {
         setTimeout(() => {
           const items = [];
-          for (let i = 1; i < 50; i++) {
+          for (let i = 1; i < 10; i++) {
             items.push({
-              date: "23.12.2022",
-              category: "Sport",
+              date: "01.01.2022",
+              category: "Food",
               value: i,
               id: Math.floor(
                 Math.random() * Math.floor(Math.random() * Date.now() + i)

@@ -1,6 +1,11 @@
 <template>
   <v-footer dark padless>
-    <v-card flat tile class="color lighten-1 white--text text-center">
+    <v-card
+      flat
+      tile
+      class="white--text text-center"
+      color="rgba(78, 125, 150)"
+    >
       <v-card-text>
         <v-btn v-for="icon in icons" :key="icon" class="mx-4 white--text" icon>
           <v-icon size="24px">

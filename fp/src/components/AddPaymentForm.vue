@@ -19,7 +19,12 @@
       outlined
       dense
     ></v-text-field>
-    <v-btn @click="onClickSave" :ripple="false" color="teal mb-12" dark
+    <v-btn
+      @click="onClickSave"
+      :ripple="false"
+      class="mb-12"
+      color="#FF844B"
+      dark
       >ADD<v-icon>mdi-plus</v-icon></v-btn
     >
   </v-card>
