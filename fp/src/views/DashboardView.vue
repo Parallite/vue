@@ -1,26 +1,75 @@
 <template>
-  <v-container>
+  <v-container class="mt-10">
     <v-row>
-      <v-col>
-        <div class="text-h5 text-sm-h3 pb-6 main-text">My personal cost</div>
-        <v-dialog v-model="dialog" width="500">
-          <template #activator="{ on }"
-            ><v-btn v-on="on" color="#FF844B" class="mb-12" :ripple="false" dark
-              >ADD NEW COST <v-icon>mdi-plus</v-icon></v-btn
-            ></template
-          >
-          <v-card>
-            <AddPaymentForm />
-          </v-card>
-        </v-dialog>
+      <v-col xl="6" lg="7" md="12" sm="12" xs="12">
+        <h1
+          class="
+            text-h4 text-md-h3
+            pb-6
+            d-flex
+            justify-center
+            d-md-flex
+            justify-md-start
+          "
+        >
+          My personal cost
+        </h1>
+        <div class="d-flex flex-column justify-sm-space-between flex-sm-row">
+          <v-dialog v-model="dialog" width="500">
+            <template #activator="{ on }">
+              <v-btn
+                v-on="on"
+                color="#FF844B"
+                class="mb-12 dashboard_btn"
+                :ripple="false"
+                dark
+                >ADD NEW COST <v-icon>mdi-plus</v-icon></v-btn
+              >
+            </template>
+            <v-card>
+              <AddPaymentForm />
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialogCategory" width="500">
+            <template #activator="{ on }">
+              <v-btn
+                v-on="on"
+                color="#FF844B"
+                class="mb-12 dashboard_btn"
+                :ripple="false"
+                dark
+                >ADD NEW CATEGORY <v-icon>mdi-plus</v-icon></v-btn
+              >
+            </template>
+            <v-card>
+              <AddCategoryForm />
+            </v-card>
+          </v-dialog>
+        </div>
         <PaymentsDisplay :items="paymentsList" @editModeOn="editModeOn" />
       </v-col>
-      <v-col class="d-flex flex-column justify-space-around mb-6">
+      <v-col
+        xl="6"
+        lg="5"
+        md="12"
+        sm="12"
+        xs="12"
+        class="d-flex flex-column justify-space-around mb-12"
+      >
         <template>
-          <DoughnutChart :chartDataDonutInfo="chartDataDonutInfo" />
+          <DoughnutChart
+            class="douhnut"
+            :chartDataDonutInfo="chartDataDonutInfo"
+          />
         </template>
         <template>
-          <BarChart :chartDataBarInfo="chartDataBarInfo" />
+          <BarChart
+            :chartDataBarInfo="chartDataBarInfo"
+            :categoryListBar="categoryListBar"
+            @changeLabelBar="changeLabelBar"
+            @getYear="getYear"
+          />
+          <CalendarToBar @getYear="getYear" />
         </template>
       </v-col>
     </v-row>
@@ -29,25 +78,35 @@
 <script>
 import PaymentsDisplay from "@/components/PaymentsDisplay.vue";
 import AddPaymentForm from "@/components/AddPaymentForm.vue";
+import AddCategoryForm from "@/components/AddCategoryForm.vue";
 import DoughnutChart from "@/components/DoughnutChart.vue";
 import BarChart from "@/components/BarChart.vue";
+import CalendarToBar from "@/components/CalendarToBar.vue";
 
 export default {
   name: "DashboardView",
-  components: { PaymentsDisplay, AddPaymentForm, DoughnutChart, BarChart },
+  components: {
+    PaymentsDisplay,
+    AddPaymentForm,
+    AddCategoryForm,
+    DoughnutChart,
+    BarChart,
+    CalendarToBar,
+  },
   data() {
     return {
       dialog: false,
+      dialogCategory: false,
       chartDataDonutInfo: {
         labels: [],
         datasets: [
           {
             backgroundColor: [
-              "#41B883",
-              "#E46651",
-              "#00D8FF",
-              "#DD1B16",
-              "ffa500",
+              "#de6600",
+              "#fea02f",
+              "#ebd9c8",
+              "#007a7a",
+              "003f5a",
             ],
             data: [],
             hoverOffset: 4,
@@ -73,13 +132,11 @@ export default {
           {
             label: "",
             backgroundColor: [
-              "#1480A3",
-              "#7FB9D2",
-              "#B7CBD2",
-              "#EAF0EE",
-              "#FAB509",
-              "#4E9BAD",
-              "#FD8402",
+              "#de6600",
+              "#fea02f",
+              "#ebd9c8",
+              "#007a7a",
+              "003f5a",
             ],
             borderColor: [
               "rgb(255, 99, 132)",
@@ -96,13 +153,24 @@ export default {
         ],
       },
       activeLabelCategoryBar: "Food",
+      curYear: 2022,
     };
   },
   methods: {
+    mouseOver() {
+      this.active = !this.active;
+    },
+    getYear(year) {
+      this.curYear = year;
+    },
     editModeOn(item) {
       this.dialog = true;
       let itemData = item;
       this.$store.commit("addDataToEditPaymentsList", itemData);
+    },
+    changeLabelBar(category) {
+      this.activeLabelCategoryBar = category;
+      this.chartDataBarInfo.datasets[0].label = this.activeLabelCategoryBar;
     },
   },
   computed: {
@@ -143,11 +211,16 @@ export default {
       return actualCategoryList;
     },
     getCategorySumBarFromMonth() {
+      console.log(this.activeLabelCategoryBar);
       const objToBar = {};
       const actualPaymentList = this.$store.getters.getPaymentList;
       for (const category of this.categoryListBar) {
         objToBar[category] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        const filteredCategory = actualPaymentList.filter(
+        const regExp = new RegExp(`[0-9][0-9].[0-9][0-9].${this.curYear}`);
+        const filteredPaymentYear = actualPaymentList.filter(
+          (item) => regExp.test(item.date) === true
+        );
+        const filteredCategory = filteredPaymentYear.filter(
           (item) => item.category === category
         );
         for (const item of filteredCategory) {
@@ -224,7 +297,17 @@ export default {
 </script>
 
 <style scoped>
-.main-text {
-  color: rgb(10, 13, 37);
+.douhnut {
+  margin-bottom: 100px;
+}
+.dashboard_btn {
+  transition: all 0.5s ease;
+}
+.dashboard_btn:hover {
+  color: #703c24;
+  transform: translateY(-5px);
+  -webkit-box-shadow: 0px 15px 5px -5px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 15px 5px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 15px 5px -5px rgba(0, 0, 0, 0.2);
 }
 </style>

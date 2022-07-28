@@ -1,26 +1,52 @@
 <template>
-  <div class="about">
-    <h1>This is an NotFound page</h1>
-    <router-link
-      :to="{
-        name: 'AddPaymentForm',
-        params: { section: 'payment', category: 'Food' },
-        query: { value: 500 },
-      }"
-      >Sport 500</router-link
-    >
-
-    <button @click="openModalAuthForm">Show</button>
+  <div
+    class="notfound_container"
+    :style="{ backgroundImage: 'url(' + notFoundSvg + ')' }"
+  >
+    <div class="notfound_btn-wrp">
+      <v-btn
+        :ripple="false"
+        class="notfound_btn"
+        width="200px"
+        color="#FF844B"
+        dark
+        to="/dashboard"
+        large
+        >Go back home<v-icon class="pl-5">mdi-home</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
 <script>
+import notFoundSvg from "@/assets/img/404.svg";
+
 export default {
   name: "NotFound",
-  methods: {
-    openModalAuthForm() {
-      this.$modal.show("auth", { title: "Auth Form", component: "auth" });
-    },
+  data() {
+    return {
+      notFoundSvg: notFoundSvg,
+    };
   },
+  methods: {},
 };
 </script>
+
+<style>
+.notfound_container {
+  height: 90%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.notfound_btn-wrp {
+  position: absolute;
+  left: 50%;
+  top: 90%;
+  transform: translate(-50%, -50%);
+}
+
+.notfound_btn {
+  animation: btn-pulse-animate 2s ease-in-out infinite;
+}
+</style>

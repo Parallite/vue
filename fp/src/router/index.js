@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import AddPaymentForm from "../components/AddPaymentForm.vue";
+// import AddPaymentForm from "../components/AddPaymentForm.vue";
 
 Vue.use(Router);
 
@@ -26,11 +26,11 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "PageAbout" */ "../views/NotFoundView.vue"),
   },
-  {
-    path: "/add/:section/:category",
-    name: "AddPaymentForm",
-    component: AddPaymentForm,
-  },
+  // {
+  //   path: "/add/:section/:category",
+  //   name: "AddPaymentForm",
+  //   component: AddPaymentForm,
+  // },
   {
     path: "*",
     redirect: { name: "NotFound" },

@@ -1,21 +1,15 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-    {{ status }}
-    <MyVideoPlayer />
-  </div>
+  <AboutProject />
 </template>
 
 <script>
-import MyVideoPlayer from "@/components/MyVideoPlayer.vue";
+import AboutProject from "@/components/AboutProject.vue";
 export default {
-  name: "AboutView",
-  component: {},
-  data() {
-    return {
-      status: "stop",
-    };
-  },
-  components: { MyVideoPlayer },
+  components: { AboutProject },
+  name: "App",
+
+  data: () => ({
+    //
+  }),
 };
 </script>

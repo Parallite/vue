@@ -15,9 +15,12 @@ const mutations = {
   },
   addDataToPaymentsList(state, payload) {
     state.paymentsList.push(payload);
+    payload.id = state.paymentsList.length;
   },
   setCategories(state, payload) {
-    state.categoryList = payload;
+    if (state.categoryList.length == 0) {
+      state.categoryList.push(...payload);
+    }
   },
   setPaymentsListDataFromNotFoundView(state, payload) {
     state.paymentsListFromNotFoundView.push(payload);
@@ -25,6 +28,9 @@ const mutations = {
   removeItemFromPaymentsList(state, payload) {
     let idxEl = state.paymentsList.indexOf(payload);
     state.paymentsList.splice(idxEl, 1);
+    state.paymentsList.forEach((item) => {
+      item.id = state.paymentsList.indexOf(item) + 1;
+    });
   },
   addDataToEditPaymentsList(state, payload) {
     state.editDataList.push(payload);
@@ -46,6 +52,13 @@ const mutations = {
       state.paymentsList[idxOutdatedData].date = actualData.date;
     }
     state.editDataList = [];
+  },
+  addNewCategory(state, payload) {
+    state.categoryList.push(payload);
+  },
+  deleteCategory(state, payload) {
+    let idx = state.categoryList.indexOf(payload);
+    state.categoryList.splice(idx, 1);
   },
 };
 
@@ -71,14 +84,22 @@ export default new Vuex.Store({
       return new Promise((resolve) => {
         setTimeout(() => {
           const items = [];
-          for (let i = 1; i < 10; i++) {
+          for (let i = 1; i < 30; i++) {
             items.push({
-              date: "01.01.2022",
-              category: "Food",
-              value: i,
-              id: Math.floor(
-                Math.random() * Math.floor(Math.random() * Date.now() + i)
+              date: new Intl.DateTimeFormat("UTC", {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+              }).format(
+                new Date(
+                  Math.random() * (2023 - 2015) + 2015,
+                  Math.random() * 12,
+                  Math.random() * 30
+                )
               ),
+              category: "Food",
+              value: Math.floor(Math.random() * 1000),
+              id: items.length + 1,
             });
           }
           resolve(items);
